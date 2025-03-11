@@ -89,10 +89,4 @@ public class RentPage {
     public boolean checkCompleteTitleFormSuccessPopUp() {
         return driver.findElement(successMessageFromCompletePopUp).isDisplayed();
     }
-
-    // Дополнительная проверка успешности ввода комментария
-    public boolean isCommentFieldFilled(String expectedComment) {
-        WebElement commentField = driver.findElement(commentFieldPlaceholder);
-        return commentField.getAttribute("value").equals(expectedComment);
-    }
 }
