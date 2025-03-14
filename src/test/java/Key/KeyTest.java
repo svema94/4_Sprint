@@ -1,29 +1,45 @@
 package Key;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
-import utils.WebDriverFactory;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class KeyTest {
-
     protected WebDriver driver;
-
-    // Определяем URL как константу
-    private static final String SCOOTER_URL = "https://qa-scooter.praktikum-services.ru/";
+    private static String url = "https://qa-scooter.praktikum-services.ru/";
 
     @Before
-    public void setUp() {
-        // По умолчанию используем Chrome, но можно передать параметр через Maven
-        String browser = System.getProperty("browser", "firefox");
-        driver = WebDriverFactory.createDriver(browser);
+    public void setup() {
+        // Определяем браузер
+        String browser = System.getProperty("browser", "chrome").toLowerCase();
+
+        // Устанавливаем драйвер и создаем экземпляр браузера
+        switch (browser) {
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "chrome":
+            default:
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+        }
+
+        // Максимизируем окно браузера и открываем URL
         driver.manage().window().maximize();
-        driver.get(SCOOTER_URL); // Используем константу вместо жёстко закодированного URL
+        driver.get(url);
     }
 
     @After
-    public void tearDown() {
-        driver.quit();
+    public void teardown() {
+            driver.quit();
+    }
+
+    public WebDriver getWebDriver() {
+        return driver;
     }
 }
-
